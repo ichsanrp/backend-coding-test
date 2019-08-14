@@ -4,6 +4,7 @@ import helmet = require("helmet");
 const jsonParser = bodyParser.json();
 
 export class Controller {
+    public static app: express.Application = express().use(jsonParser);
     public static route(method: string, path: string) {
         return (
             target: any,
@@ -23,6 +24,7 @@ export class Controller {
                 case "delete" :
                     Controller.app.delete(path, descriptor.value);
                 default:
+                    Controller.app.get(path, descriptor.value);
             }
         };
     }
@@ -30,5 +32,4 @@ export class Controller {
         Controller.app.use(helmet());
         Controller.app.listen(port, () => process.stdout.write(`App started and listening on port ${port}`));
     }
-    private static app: express.Application = express().use(jsonParser);
 }

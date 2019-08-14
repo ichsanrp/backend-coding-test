@@ -23,6 +23,7 @@ export class RidesController {
         if (id < 1) {
             log.loggers.info(errParamNotSatisfied.message);
             resp.status(400).send(errParamNotSatisfied);
+            return;
         }
 
         RidesModel.getByID(id).then((row: any) => {

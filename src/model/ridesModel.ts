@@ -2,7 +2,7 @@ import sqlite3 = require("sqlite3");
 import * as Error from "../utils/error";
 import {Rides} from "./rides";
 
-const errNotFound: Error.Error = new Error.Error("RIDES_NOT_FOUND_ERROR", "Could not find any rides");
+export const errNotFound: Error.Error = new Error.Error("RIDES_NOT_FOUND_ERROR", "Could not find any rides");
 export class RidesModel {
 
     public static persist(ride: Rides) {
@@ -13,7 +13,7 @@ export class RidesModel {
                     if (err) {
                         return reject(err);
                     }
-                    ride.id = this.lastID;
+                    ride.rideID = this.lastID;
                     resolve(this.lastID);
                 },
             );
@@ -41,9 +41,10 @@ export class RidesModel {
                         return reject(err);
                     }
 
-                    if (rows.length === 0) {
+                    if (rows === undefined) {
                         return reject(errNotFound);
                     }
+
                     resolve(rows);
                 },
             );

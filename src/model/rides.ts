@@ -4,7 +4,7 @@ import * as logic from "../utils/logical";
 export const errCodeValidation: string = "VALIDATION_ERROR";
 
 export class Rides {
-    public id: number = 0;
+    public rideID: number = 0;
     public startLat: number;
     public startLong: number;
     public endLat: number;
@@ -16,7 +16,7 @@ export class Rides {
 
     // tslint:disable-next-line:max-line-length
     constructor(id: number, riderName: string, driverName: string, driverVehicle: string, startLat: number, endLat: number, startLong: number, endLong: number ) {
-        this.id = id;
+        this.rideID = id;
         this.riderName = riderName;
         this.driverName = driverName;
         this.driverVehicle = driverVehicle;

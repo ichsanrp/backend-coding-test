@@ -52,7 +52,7 @@ export class RidesController {
         RidesModel.getByID(id).then((row: any) => {
             resp.send(row);
         }, (e: Error.Error) => {
-            log.loggers.error(id + " : " + e.message);
+            log.loggers.error(e.message);
             resp.status(404).send(e);
         });
     }

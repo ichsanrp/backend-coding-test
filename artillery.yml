@@ -1,8 +1,21 @@
 config:
   target: 'http://localhost:8010'
   phases:
-    - duration: 30
-      arrivalRate: 100
+    - duration: 5
+      arrivalRate: 10
+      rampTo: 50
+      name: "50 users"
+    - duration: 10
+      arrivalRate: 20
+      rampTo: 200
+      name: "200 users"
+    - duration: 10
+      arrivalRate: 40
+      rampTo: 400
+      name: "400 users"
+    - duration: 5
+      arrivalRate: 2000
+      name: "jitter traffic"
 scenarios:
   - name: "Main"
     flow:

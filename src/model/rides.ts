@@ -51,6 +51,10 @@ export class Rides {
         this.created = new Date();
     }
 
+    public toString(): string {
+        return JSON.stringify(this);
+    }
+
     public validate(): {isValid: boolean; err: Error.Error; } {
         if (logic.notInRange(this.startLat, -90, 90) || logic.notInRange(this.startLong, -180, 180)) {
             return {

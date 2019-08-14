@@ -41,7 +41,7 @@ export class RidesController {
      */
     @Controller.route("get", "/rides/:id")
     public getByID(req: express.Request, resp: express.Response) {
-        const id = parseInt(req.params.id, 32);
+        const id = parseInt(req.params.id, 10);
 
         if (id < 1) {
             log.loggers.info(errParamNotSatisfied.message);
@@ -52,7 +52,7 @@ export class RidesController {
         RidesModel.getByID(id).then((row: any) => {
             resp.send(row);
         }, (e: Error.Error) => {
-            log.loggers.error(e.message);
+            log.loggers.error(id + " : " + e.message);
             resp.status(404).send(e);
         });
     }
@@ -157,6 +157,7 @@ export class RidesController {
         const validation = newRide.validate();
         if (validation.isValid) {
             RidesModel.persist(newRide).then(() => {
+                log.loggers.info(newRide.toString());
                 resp.send(newRide);
             }, (e: any) => {
                 log.loggers.error(e.message);

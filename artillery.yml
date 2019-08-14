@@ -4,7 +4,7 @@ config:
     - duration: 30
       arrivalRate: 100
 scenarios:
-  - name: "insert"
+  - name: "Main"
     flow:
       - post:
           url: "/rides"
@@ -17,10 +17,8 @@ scenarios:
             driver_name: "Driver Name"
             driver_vehicle: "volvo"
           capture:
-            json: "$[0].rideID"
+            json: "$.rideID"
             as: "id"
-  - name: "get by id"
-    flow:
       - get:
           url: "/rides/{{ id }}"
   - name: "get All"

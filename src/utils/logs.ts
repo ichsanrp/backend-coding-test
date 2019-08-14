@@ -1,10 +1,9 @@
 import path = require("path");
 import { createLogger, format, Logger, transports } from "winston";
 export let loggers: Logger;
-const env = process.env.NODE_ENV || "development";
 const logDir = "log";
 
-export function initLogger(file: string) {
+export function initLogger(file: string, level: string) {
     const filename = path.join(logDir, file);
 
     loggers = createLogger({
@@ -14,7 +13,7 @@ export function initLogger(file: string) {
             }),
             format.json(),
         ),
-        level: env === "development" ? "debug" : "info",
+        level,
         transports: [
         new transports.Console({
             format: format.combine(

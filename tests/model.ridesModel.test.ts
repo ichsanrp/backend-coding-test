@@ -1,7 +1,6 @@
 import * as chai from "chai";
 import * as chaiexclude from "chai-exclude";
 
-// tslint:disable-next-line:no-var-requires
 chai.use(chaiexclude.default);
 const expect = chai.expect;
 
@@ -29,6 +28,13 @@ describe("Rides Model", () => {
         const ride2 = new Rides(0, "test", "test", "test", 10, 10, 10, 10);
         const result2 = await RidesModel.persist(ride2);
         expect(result2).to.equal(2);
+
+        const ride3 = new Rides(0, "test", "test", "test", 10, 10, 10, 10);
+        delete ride3.driverName;
+
+        RidesModel.persist(ride3).then((i) => {}, (e) => {
+            expect(e.stack).contain("Error");
+        });
     });
 
     it("getbyID", async () => {

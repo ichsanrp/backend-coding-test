@@ -14,7 +14,6 @@ export class Rides {
     public driverVehicle: string;
     public created: Date;
 
-    // tslint:disable-next-line:max-line-length
     constructor(id: number, riderName: string, driverName: string, driverVehicle: string, startLat: number, endLat: number, startLong: number, endLong: number ) {
         this.rideID = id;
         this.riderName = riderName;
@@ -31,14 +30,12 @@ export class Rides {
     public validate(): {isValid: boolean; err: Error.Error; } {
         if (logic.notInRange(this.startLat, -90, 90) || logic.notInRange(this.startLong, -180, 180)) {
             return {
-                // tslint:disable-next-line:max-line-length
                 err : new Error.Error(errCodeValidation, "Start latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively"),
                 isValid : false,
             };
         }
         if (logic.notInRange(this.endLat, -90, 90) || logic.notInRange(this.endLong, -180, 180)) {
             return {
-                // tslint:disable-next-line:max-line-length
                 err : new Error.Error(errCodeValidation, "End latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively"),
                 isValid : false,
             };

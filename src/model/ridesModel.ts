@@ -7,7 +7,6 @@ export class RidesModel {
 
     public static persist(ride: Rides) {
         return new Promise((resolve, reject) => {
-            // tslint:disable-next-line:max-line-length
             RidesModel.insertStatement.run([ride.startLat, ride.startLong, ride.endLat, ride.endLong, ride.riderName, ride.driverName, ride.driverVehicle],
                 function(err) {
                     if (err) {

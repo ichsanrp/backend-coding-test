@@ -9,9 +9,10 @@ import { Controller } from "./src/controller";
 import { HealthController } from "./src/controller/healthController";
 import { RidesController } from "./src/controller/ridesController";
 import * as log from "./src/utils/logs";
+const env = process.env.NODE_ENV || "development";
 
 export function listenAndServe(p: number) {
-    log.initLogger("app.log");
+    log.initLogger("app.log", env === "development" ? "debug" : "info");
     // init all controller module
     RidesController.init(db);
     HealthController.init();

@@ -3,7 +3,6 @@ import * as chaiexclude from "chai-exclude";
 import chaiHttp = require("chai-http");
 import express = require("express");
 chai.use(chaiHttp);
-// tslint:disable-next-line:no-var-requires
 chai.use(chaiexclude.default);
 const expect = chai.expect;
 const chaiLib = chai as any;
@@ -16,12 +15,11 @@ import {RidesController} from "../src/controller/ridesController";
 import {errNotFound} from "../src/model/ridesModel";
 const mockdb = new sqlite3.Database(":memory:");
 const ctrl = new RidesController();
-// tslint:disable-next-line: no-var-requires
 const listEndpoints = require("express-list-endpoints");
 import * as log from "../src/utils/logs";
 
 describe("App", () => {
-    log.initLogger("test.log");
+    log.initLogger("test.log", "debug");
 
     it("init routing", () => {
         Controller.route("get", "/get")(null, "", {
@@ -108,6 +106,16 @@ describe("App", () => {
             });
     });
 
+    it("insert failed", () => {
+        return chaiRequestLib(Controller.app)
+            .post("/rides")
+            .type("application/json")
+            .send()
+            .then((res: { text: any; }) => {
+                chai.expect(res).have.status(400);
+            });
+    });
+
     it("insert 2", () => {
         return chaiRequestLib(Controller.app)
             .post("/rides")
@@ -150,6 +158,13 @@ describe("App", () => {
                     startLong: 10,
                 },
             );
+        });
+    });
+
+    it("get by id wrong param", () => {
+        return chaiRequestLib(Controller.app).get("/rides/0")
+            .then((res: { text: any; }) => {
+                chai.expect(res).have.status(400);
         });
     });
 

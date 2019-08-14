@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import * as Error from "../src/utils/error";
 import * as logical from "../src/utils/logical";
+import * as log from "../src/utils/logs";
 
 describe("logical operator", () => {
   it("notInRange true", () => {
@@ -23,6 +24,7 @@ describe("logical operator", () => {
     expect(result).equal(false);
   });
 });
+
 describe("error object", () => {
     it("error creation", () => {
       const result = new Error.Error("test", "test");

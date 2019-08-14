@@ -30,7 +30,7 @@ export class RidesController {
             resp.send(row);
         }, (e: Error.Error) => {
             log.loggers.error(e.message);
-            resp.send(e);
+            resp.status(500).send(e);
         });
     }
 
@@ -62,7 +62,6 @@ export class RidesController {
         const driverName = req.body.driver_name;
         const driverVehicle = req.body.driver_vehicle;
 
-        // tslint:disable-next-line:max-line-length
         const newRide = new Rides(0, riderName, driverName, driverVehicle, startLatitude, endLatitude, startLongitude, endLongitude);
         const validation = newRide.validate();
         if (validation.isValid) {
@@ -70,11 +69,11 @@ export class RidesController {
                 resp.send(newRide);
             }, (e: any) => {
                 log.loggers.error(e.message);
-                resp.send(e);
+                resp.status(500).send(e);
             });
         } else {
             log.loggers.error(validation.err.message);
-            resp.send(validation.err);
+            resp.status(400).send(validation.err);
         }
     }
 }

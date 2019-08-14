@@ -7,6 +7,7 @@
     "test": "tests"
   },
   "scripts": {
+    "test:load": "artillery run artillery.yml",
     "test": "nyc -r text -e .ts -x \"tests/*.test.ts\" mocha -r ts-node/register tests/*",
     "lint": "tslint -p .",
     "start": "npm run tsc && node build/app.js",
@@ -31,9 +32,12 @@
     "express": "^4.16.4",
     "helmet": "^3.20.0",
     "sqlite3": "^4.0.6",
+    "swagger-jsdoc": "^3.4.0",
+    "swagger-ui-express": "^4.0.7",
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "artillery": "^1.6.0-28",
     "chai": "^4.2.0",
     "chai-exclude": "^2.0.2",
     "chai-http": "^4.3.0",

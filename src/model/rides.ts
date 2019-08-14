@@ -3,6 +3,30 @@ import * as logic from "../utils/logical";
 
 export const errCodeValidation: string = "VALIDATION_ERROR";
 
+/**
+ * @swagger
+ *
+ * definitions:
+ *   Ride:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: number
+ *        startLat:
+ *          type: number
+ *        startLong:
+ *          type: number
+ *        endLat:
+ *          type: number
+ *        endLong:
+ *          type: number
+ *        riderName:
+ *          type: string
+ *        driverName:
+ *          type: string
+ *        driverVehicle:
+ *          type: string
+ */
 export class Rides {
     public rideID: number = 0;
     public startLat: number;

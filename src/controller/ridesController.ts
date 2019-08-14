@@ -2,7 +2,7 @@ import express = require("express");
 import sqlite3 = require("sqlite3");
 import { Controller } from "../controller";
 import { Rides } from "../model/rides";
-import { RidesModel } from "../model/ridesModel";
+import { errNotFound, RidesModel } from "../model/ridesModel";
 import Error = require("../utils/error");
 import * as log from "../utils/logs";
 
@@ -16,6 +16,29 @@ export class RidesController {
         RidesModel.initDB(db);
     }
 
+    /**
+     * @swagger
+     * /rides/{id}:
+     *   get:
+     *     summary: Get a ride record by ID
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         description: The Ride ID
+     *     responses:
+     *       200:
+     *         description: OK
+     *         schema:
+     *           $ref: '#/definitions/Ride'
+     *       400:
+     *         description: Bad Request
+     *         schema:
+     *           $ref: '#/definitions/Error'
+     *       404:
+     *         description: Not Found
+     *         schema:
+     *           $ref: '#/definitions/Error'
+     */
     @Controller.route("get", "/rides/:id")
     public getByID(req: express.Request, resp: express.Response) {
         const id = parseInt(req.params.id, 32);
@@ -30,10 +53,38 @@ export class RidesController {
             resp.send(row);
         }, (e: Error.Error) => {
             log.loggers.error(e.message);
-            resp.status(500).send(e);
+            resp.status(404).send(e);
         });
     }
 
+    /**
+     * @swagger
+     * /rides:
+     *   get:
+     *     summary: "Get ride record list"
+     *     parameters:
+     *     - in: query
+     *       name: page
+     *       type: number
+     *       description: page position
+     *       default: 1
+     *     - in: query
+     *       name: per_page
+     *       type: number
+     *       description: number of records per page
+     *       default: 10
+     *     responses:
+     *       200:
+     *         description: List Of Ride
+     *         schema:
+     *           type: array
+     *           items:
+     *             $ref: '#/definitions/Ride'
+     *       404:
+     *         description: Not Found
+     *         schema:
+     *           $ref: '#/definitions/Error'
+     */
     @Controller.route("get", "/rides")
     public getPage(req: express.Request, resp: express.Response) {
         const page = req.query.page === undefined ? 0 : parseInt(req.query.page, 32);
@@ -44,10 +95,50 @@ export class RidesController {
                 resp.send(rows);
         }, (err: Error.Error) => {
                 log.loggers.error(err.message);
-                resp.send(err);
+                resp.status(404).send(err);
         });
     }
 
+    /**
+     * @swagger
+     * /rides:
+     *   post:
+     *     summary: "Create a new ride record"
+     *     parameters:
+     *       - in: body
+     *         name: payload
+     *         schema:
+     *           type: object
+     *           properties:
+     *              start_lat:
+     *                  type: number
+     *              start_long:
+     *                  type: number
+     *              end_lat:
+     *                  type: number
+     *              end_long:
+     *                  type: number
+     *              rider_name:
+     *                  type: string
+     *              driver_name:
+     *                  type: string
+     *              driver_vehicle:
+     *                  type: string
+     *     responses:
+     *       200:
+     *         description: Created
+     *         schema:
+     *           $ref: '#/definitions/Ride'
+     *       400:
+     *         description: Bad Request
+     *         schema:
+     *           $ref: '#/definitions/Error'
+     *       500:
+     *         description: Internal Server Error
+     *         schema:
+     *           $ref: '#/definitions/Error'
+     *
+     */
     @Controller.route("post", "/rides")
     public insert(req: express.Request, resp: express.Response) {
         if (req.body === undefined) {

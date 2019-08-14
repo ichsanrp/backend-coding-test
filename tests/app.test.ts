@@ -1,6 +1,7 @@
 import * as chai from "chai";
 import * as chaiexclude from "chai-exclude";
 import chaiHttp = require("chai-http");
+import express = require("express");
 chai.use(chaiHttp);
 // tslint:disable-next-line:no-var-requires
 chai.use(chaiexclude.default);
@@ -23,11 +24,34 @@ describe("App", () => {
     log.initLogger("test.log");
 
     it("init routing", () => {
-        // this one wont create another route since decorator used to create a route
-        Controller.route("get", "/test");
+        Controller.route("get", "/get")(null, "", {
+            value(req: express.Request, resp: express.Response) {
+                resp.send("Test");
+            },
+        });
+        Controller.route("post", "/post")(null, "", {
+            value(req: express.Request, resp: express.Response) {
+                resp.send("Test");
+            },
+        });
+        Controller.route("put", "/put")(null, "", {
+            value(req: express.Request, resp: express.Response) {
+                resp.send("Test");
+            },
+        });
+        Controller.route("delete", "/delete")(null, "", {
+            value(req: express.Request, resp: express.Response) {
+                resp.send("Test");
+            },
+        });
+        Controller.route("default", "/default")(null, "", {
+            value(req: express.Request, resp: express.Response) {
+                resp.send("Test");
+            },
+        });
         expect(listEndpoints(Controller.app)).to.satisfy((routes: any) => {
             let valid: boolean = true;
-            const paths = ["/health", "/rides/:id", "/rides"];
+            const paths = ["/get", "/post", "/put", "/delete", "/default"];
             for (const path of paths) {
                 let check: boolean = false;
                 for (const route of routes) {

@@ -1,6 +1,5 @@
 import bodyParser = require("body-parser");
 import express = require("express");
-import helmet = require("helmet");
 const jsonParser = bodyParser.json();
 
 export class Controller {
@@ -9,7 +8,7 @@ export class Controller {
         return (
             target: any,
             propertyKey: string | symbol,
-            descriptor: PropertyDescriptor,
+            descriptor: any,
         ) => {
             switch (method) {
                 case "get" :
@@ -27,9 +26,5 @@ export class Controller {
                     Controller.app.get(path, descriptor.value);
             }
         };
-    }
-    public static start(port: number) {
-        Controller.app.use(helmet());
-        Controller.app.listen(port, () => process.stdout.write(`App started and listening on port ${port}`));
     }
 }

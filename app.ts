@@ -1,5 +1,5 @@
 // lib/app.ts
-import express = require("express");
+import helmet = require("helmet");
 import sqlite3 = require("sqlite3");
 const port = 8010;
 const db = new sqlite3.Database(":memory:");
@@ -15,8 +15,8 @@ export function listenAndServe(p: number) {
     // init all controller module
     RidesController.init(db);
     HealthController.init();
-
-    Controller.start(p);
+    Controller.app.use(helmet());
+    Controller.app.listen(port, () => process.stdout.write(`App started and listening on port ${port}`));
 }
 
 listenAndServe(port);

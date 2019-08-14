@@ -87,8 +87,8 @@ export class RidesController {
      */
     @Controller.route("get", "/rides")
     public getPage(req: express.Request, resp: express.Response) {
-        const page = req.query.page === undefined ? 0 : parseInt(req.query.page, 32);
-        const perPage = req.query.per_page === undefined ? 10 : parseInt(req.query.per_page, 32);
+        const page = req.query.page === undefined ? 0 : parseInt(req.query.page, 10);
+        const perPage = req.query.per_page === undefined ? 10 : parseInt(req.query.per_page, 10);
         const offset = (page * perPage);
 
         RidesModel.getPagination(perPage, offset).then((rows: any) => {

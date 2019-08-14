@@ -1,6 +1,7 @@
 config:
   target: 'http://localhost:8010'
   phases:
+    - pause : 10
     - duration: 5
       arrivalRate: 10
       rampTo: 50

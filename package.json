@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test:load": "artillery run artillery.yml",
+    "test:load": "npm run tsc && forever start build/app.js && artillery run artillery.yml && forever stopall",
     "test": "nyc -r text -e .ts -x \"tests/*.test.ts\" mocha -r ts-node/register tests/*",
     "lint": "tslint -p .",
     "start": "npm run tsc && node build/app.js",
@@ -49,6 +49,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
     "express-list-endpoints": "^4.0.1",
+    "forever": "^1.0.0",
     "husky": "^3.0.3",
     "mocha": "^6.2.0",
     "nyc": "^14.1.1",

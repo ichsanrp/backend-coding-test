@@ -6,10 +6,12 @@ const db = new sqlite3.Database(":memory:");
 
 // controller configuration
 import { Controller } from "./src/controller";
-import { HealthController } from "./src/controller/health";
-import { RidesController } from "./src/controller/rides";
+import { HealthController } from "./src/controller/healthController";
+import { RidesController } from "./src/controller/ridesController";
+import * as log from "./src/utils/logs";
 
 export function listenAndServe(p: number) {
+    log.initLogger("app.log");
     // init all controller module
     RidesController.init(db);
     HealthController.init();

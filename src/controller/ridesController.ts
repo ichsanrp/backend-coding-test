@@ -4,6 +4,9 @@ import { Controller } from "../controller";
 import { Rides } from "../model/rides";
 import { RidesModel } from "../model/ridesModel";
 import Error = require("../utils/error");
+import * as log from "../utils/logs";
+
+const errParamNotSatisfied = new Error.Error("VALIDATION_ERROR", "parameter not satisfied");
 
 export class RidesController {
     public static db: sqlite3.Database;
@@ -18,12 +21,14 @@ export class RidesController {
         const id = parseInt(req.params.id, 32);
 
         if (id < 1) {
-            resp.status(400).send( new Error.Error("VALIDATION_ERROR", "please specify id"));
+            log.loggers.info(errParamNotSatisfied.message);
+            resp.status(400).send(errParamNotSatisfied);
         }
 
         RidesModel.getByID(id).then((row: any) => {
             resp.send(row);
-        }, (e: any) => {
+        }, (e: Error.Error) => {
+            log.loggers.error(e.message);
             resp.send(e);
         });
     }
@@ -36,7 +41,8 @@ export class RidesController {
 
         RidesModel.getPagination(perPage, offset).then((rows: any) => {
                 resp.send(rows);
-        }, (err: any) => {
+        }, (err: Error.Error) => {
+                log.loggers.error(err.message);
                 resp.send(err);
         });
     }
@@ -44,7 +50,8 @@ export class RidesController {
     @Controller.route("post", "/rides")
     public insert(req: express.Request, resp: express.Response) {
         if (req.body === undefined) {
-            resp.status(400).send(new Error.Error("VALIDATION_ERROR", "parameter not satisfied"));
+            log.loggers.info(errParamNotSatisfied.message);
+            resp.status(400).send(errParamNotSatisfied);
         }
         const startLatitude = Number(req.body.start_lat);
         const startLongitude = Number(req.body.start_long);
@@ -61,9 +68,11 @@ export class RidesController {
             RidesModel.persist(newRide).then(() => {
                 resp.send(newRide);
             }, (e: any) => {
+                log.loggers.error(e.message);
                 resp.send(e);
             });
         } else {
+            log.loggers.error(validation.err.message);
             resp.send(validation.err);
         }
     }
